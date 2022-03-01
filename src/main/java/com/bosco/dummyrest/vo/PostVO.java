@@ -1,10 +1,10 @@
-package com.bosco.vo;
+package com.bosco.dummyrest.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Post {
+public class PostVO {
     private Integer userId;
     private Integer id;
     private String title;
@@ -31,10 +31,10 @@ public class Post {
         return content;
     }
 
-    public Post() {
+    public PostVO() {
     }
 
-    public Post(Integer userId, Integer id, String title, String content) {
+    public PostVO(Integer userId, Integer id, String title, String content) {
         this.userId = userId;
         this.id = id;
         this.title = title;
