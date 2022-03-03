@@ -22,7 +22,7 @@ public class ArticleService {
     @Autowired
     private ArticleInitService articleInitService;
 
-    public List<ArticleVO> getAllPosts() {
+    public List<ArticleVO> getAllArticles() {
         List<ArticleEntity> articles = articleRepository.findAll();
 
         // TODO exception handle
@@ -35,25 +35,26 @@ public class ArticleService {
             // save to db
             articleRepository.saveAll(articles);
 
+            logger.info("Fetched from external api service");
             return articleVOList;
         }
 
         return ArticleEntityConverter.convertEntityListToVOList(articles);
     }
 
-    public String createPost(ArticleVO post) {
+    public String createArticle(ArticleVO articleVO) {
 
         return null;
     }
 
-    public ArticleVO getPostById(long id) {
+    public ArticleVO getArticleById(long id) {
 
         return null;
     }
 
 
 
-    public String deletePost(long id) {
+    public String deleteArticle(long id) {
         return "" + id;
     }
 }

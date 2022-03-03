@@ -3,6 +3,7 @@ package com.bosco.dummyrest.controllers;
 import com.bosco.dummyrest.entities.ArticleEntity;
 import com.bosco.dummyrest.services.ArticleService;
 import com.bosco.dummyrest.vo.ArticleVO;
+import com.bosco.dummyrest.vo.ResponseMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,31 +22,27 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public ArticleVO getPost(@PathVariable int id) {
-        ArticleVO post = articleService.getPostById(id);
+    public ResponseEntity<?> getPost(@PathVariable int id) {
+        ArticleVO article = articleService.getArticleById(id);
 
-        return post;
+        return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
     @GetMapping("/articles")
     public ResponseEntity<?> getAllPosts() throws JsonProcessingException {
-        List<ArticleVO> posts = articleService.getAllPosts();
+        List<ArticleVO> posts = articleService.getAllArticles();
 
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
     @PostMapping("/articles")
-    public ArticleVO createPost() {
-        ArticleVO p = new ArticleVO(9L, 99L,
-                "new title",  "new content");
-
-        String res = articleService.createPost(p);
+    public ResponseEntity<ResponseMessage> createPost() {
 
         return null;
     }
 
     @DeleteMapping("/articles/{id}")
-    public String deletePostById(@PathVariable long id) {
-        return articleService.deletePost(id);
+    public ResponseEntity<ResponseMessage> deletePostById(@PathVariable long id) {
+        return null;
     }
 }
