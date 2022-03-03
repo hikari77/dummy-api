@@ -1,15 +1,17 @@
 package com.bosco.dummyrest.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name="post")
-public class PostEntity {
+@Table(name="article")
+public class ArticleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "article_id")
+    private Long articleId;
 
     @Column(name = "user_id")
     private Long userId;
@@ -20,12 +22,12 @@ public class PostEntity {
     @Column( name = "content")
     private String content;
 
-    public Long getId() {
-        return id;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public Long getUserId() {
@@ -49,6 +51,16 @@ public class PostEntity {
     }
 
     public void setContent(String content) {
+        this.content = content;
+    }
+
+    public ArticleEntity() {
+    }
+
+    public ArticleEntity(Long articleId, Long userId, String title, String content) {
+        this.articleId = articleId;
+        this.userId = userId;
+        this.title = title;
         this.content = content;
     }
 }
