@@ -29,7 +29,7 @@ public class ArticleController {
 
     @GetMapping("/articles")
     public ResponseEntity<?> getAllPosts() throws JsonProcessingException {
-        List<ArticleEntity> posts = articleService.getAllPosts();
+        List<ArticleVO> posts = articleService.getAllPosts();
 
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }

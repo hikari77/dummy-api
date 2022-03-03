@@ -2,13 +2,16 @@ package com.bosco.dummyrest.services;
 
 import com.bosco.dummyrest.dao.ArticleRepository;
 import com.bosco.dummyrest.entities.ArticleEntity;
+import com.bosco.dummyrest.util.ArticleEntityConverter;
 import com.bosco.dummyrest.vo.ArticleVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -19,23 +22,23 @@ public class ArticleService {
     @Autowired
     private ArticleInitService articleInitService;
 
-    public List<ArticleEntity> getAllPosts() {
-        // no db for now
+    public List<ArticleVO> getAllPosts() {
         List<ArticleEntity> articles = articleRepository.findAll();
-//        List<PostEntity> posts = new ArrayList<>();
 
         // TODO exception handle
         if (articles.size() == 0) {
-            articles = articleInitService.retrievePostsFromFreeAPI();
+
+            List<ArticleVO> articleVOList =  articleInitService.retrievePostsFromFreeAPI();
+
+            articles = ArticleEntityConverter.convertVosToEntityList(articleVOList);
+
+            // save to db
+            articleRepository.saveAll(articles);
+
+            return articleVOList;
         }
-        logger.info("size is: ------  " + articles.size());
 
-//        logger.info(articles.toString());
-
-        // save to db
-//        articleRepository.saveAll(articles);
-
-        return articles;
+        return ArticleEntityConverter.convertEntityListToVOList(articles);
     }
 
     public String createPost(ArticleVO post) {

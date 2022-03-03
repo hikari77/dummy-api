@@ -1,6 +1,5 @@
 package com.bosco.dummyrest.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -58,6 +57,7 @@ public class ArticleEntity {
     }
 
     public ArticleEntity(Long articleId, Long userId, String title, String content) {
+        super();
         this.articleId = articleId;
         this.userId = userId;
         this.title = title;

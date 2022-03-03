@@ -5,8 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ArticleVO {
+    @JsonProperty("id")
     private Long articleId;
+
+    @JsonProperty("userId")
     private Long userId;
+
+    @JsonProperty("title")
     private String title;
 
     @JsonProperty("body")
