@@ -9,6 +9,7 @@ import com.bosco.dummyrest.vo.ResponseMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class ArticleController {
 
     private ArticleService articleService;
 
+    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
@@ -30,6 +32,9 @@ public class ArticleController {
     public ResponseEntity<?> getArticle(@PathVariable int id) {
         ArticleVO article = articleService.getArticleById(id);
 
+        if (article == null) {
+            throw new ArticleNotFoundException("Article not found.");
+        }
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
@@ -43,15 +48,21 @@ public class ArticleController {
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
-    @PostMapping("/articles")
-    public ResponseEntity<ResponseMessage> createArticle() {
+    @RequestMapping(value = "/articles", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ResponseMessage> createArticle(@RequestBody ArticleVO articleVO ) {
+        ArticleVO savedArticle = articleService.createArticle(articleVO);
 
-        return null;
+        return new ResponseEntity<ResponseMessage>(new ResponseMessage("user created", savedArticle), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/articles/{id}")
     public ResponseEntity<ResponseMessage> deleteArticleById(@PathVariable long id) {
-        return null;
+        ArticleVO articleVO = articleService.getArticleById(id);
+        if (articleVO == null) {
+            throw new ArticleNotFoundException("Article not found.");
+        }
+        articleService.deleteArticle(id);
+        return new ResponseEntity<ResponseMessage>(new ResponseMessage("Article deleted."), HttpStatus.OK);
     }
 
     @ExceptionHandler(ArticleNotFoundException.class)

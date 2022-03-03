@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,19 +43,20 @@ public class ArticleService {
         return ArticleEntityConverter.convertEntityListToVOList(articles);
     }
 
-    public String createArticle(ArticleVO articleVO) {
-
-        return null;
+    @Transactional
+    public ArticleVO createArticle(ArticleVO vo) {
+        ArticleEntity articleEntity = articleRepository.save(
+                new ArticleEntity(vo.getArticleId(), vo.getUserId(), vo.getTitle(), vo.getContent()));
+        return ArticleEntityConverter.convertEntityToArticleVO(articleEntity);
     }
 
     public ArticleVO getArticleById(long id) {
-
-        return null;
+        ArticleEntity articleEntity = articleRepository.findById(id).orElse(null);
+        return ArticleEntityConverter.convertEntityToArticleVO(articleEntity);
     }
 
 
-
-    public String deleteArticle(long id) {
-        return "" + id;
+    public void deleteArticle(long id) {
+        articleRepository.deleteById(id);
     }
 }
