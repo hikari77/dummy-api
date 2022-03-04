@@ -13,8 +13,4 @@ public class DummyrestApplication {
 		SpringApplication.run(DummyrestApplication.class, args);
 	}
 
-	@Bean(name="restClient")
-	public RestTemplate getRestClient(RestTemplateBuilder builder) {
-		return builder.build();
-	}
 }
