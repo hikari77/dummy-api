@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,16 @@ import java.util.List;
 @Service
 public class ArticleInitService {
 
-    // TODO IOC
-    private ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleInitService.class);
 
     private final RestTemplate restClient;
+    private final ObjectMapper objectMapper;
 
-    public ArticleInitService(@Qualifier("restClient") RestTemplate restClient) {
+    @Autowired
+    public ArticleInitService(@Qualifier("restClient") RestTemplate restClient, ObjectMapper objectMapper) {
         this.restClient = restClient;
+        this.objectMapper = objectMapper;
     }
 
     public List<ArticleVO> retrievePostsFromFreeAPI() {
@@ -35,7 +37,7 @@ public class ArticleInitService {
         List<ArticleVO> articles = null;
 
         try {
-            articles = mapper.readValue(res.getBody(), new TypeReference<List<ArticleVO>>() {});
+            articles = objectMapper.readValue(res.getBody(), new TypeReference<List<ArticleVO>>() {});
         } catch (JsonProcessingException e) {
             logger.error("Failed to parse JSON.");
         }
